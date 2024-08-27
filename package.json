@@ -36,7 +36,8 @@
     "test-windows": "tree-sitter test"
   },
   "dependencies": {
-    "nan": "^2.15.0"
+    "nan": "^2.17.0",
+    "tree-sitter-verilog": "^1.0.0"
   },
   "devDependencies": {
     "@drom/eslint-config": "^0.11.0",
@@ -53,5 +54,8 @@
       "scope": "source.verilog",
       "injection-regex": "^verilog$"
     }
-  ]
+  ],
+  "bin": {
+    "tree-sitter-verilog": "bin/install.js"
+  }
 }

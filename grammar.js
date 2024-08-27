@@ -1581,7 +1581,7 @@ const rules = {
 
   limit_value: $ => $.constant_mintypmax_expression,
 
-  variable_decl_assignment: $ => choice(
+  variable_decl_assignment: $ => prec(2, choice(
     seq(
       $._variable_identifier,
       repeat($._variable_dimension),
@@ -1597,7 +1597,7 @@ const rules = {
       $.class_variable_identifier,
       optseq('=', $.class_new)
     )
-  ),
+  )),
 
   class_new: $ => choice(
     seq(
@@ -3021,16 +3021,19 @@ const rules = {
     seq($.nonblocking_assignment, ';'),
     seq($.procedural_continuous_assignment, ';'),
     seq($.system_tf_call, ';'),
+    seq($.tf_call, ';'),
+    seq($.text_macro_usage, ';'),
     $.case_statement,
     $.conditional_statement,
     seq($.inc_or_dec_expression, ';'),
-    // $.subroutine_call_statement,
+    //$.subroutine_call_statement,
     $.disable_statement,
     $.event_trigger,
     $.loop_statement,
     $.jump_statement,
     $.par_block,
     $.seq_block,
+    //prec.left($.text_macro_usage),
     $.procedural_timing_control_statement,
     $.wait_statement,
     $._procedural_assertion_statement,
@@ -4723,7 +4726,7 @@ const rules = {
   // A simple_identifier or c_identifier shall
   // start with an alpha or underscore ( _ ) character,
   // shall have at least one character, and shall not have any spaces.
-  simple_identifier: $ => /[a-zA-Z_][a-zA-Z0-9_$]*/,
+  simple_identifier: $ => /[a-zA-Z_][a-zA-Z0-9_$]*(\.[a-zA-Z0-9_$]+)*/,
 
   specparam_identifier: $ => alias($._identifier, $.specparam_identifier),
 
@@ -4746,7 +4749,7 @@ const rules = {
 };
 
 module.exports = grammar({
-  name: 'verilog',
+  name: 'systemverilog',
   word: $ => $.simple_identifier,
   rules: rules,
   extras: $ => [/\s/, $.comment],
